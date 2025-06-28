@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class MainLayoutComponent implements OnInit {
   name: string = '';
+  role: number = -1;
   constructor(
     private dialog: MatDialog,
     private router: Router,
@@ -27,7 +28,8 @@ export class MainLayoutComponent implements OnInit {
       try {
         // Decode JWT token payload
         const payload = JSON.parse(atob(token.split('.')[1]));
-        this.name = payload.email || ''; // sesuaikan key "name" sesuai tokenmu
+        this.name = payload.email || '';
+        this.role = payload.role ?? -1;
       } catch (e) {
         console.error('Error decoding token', e);
       }

@@ -91,6 +91,12 @@ import { EditUserComponent } from './pages/user/edit-user/edit-user.component';
 
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CreateDocumentComponent } from './pages/document/create-document/create-document.component';
+import { EditDocumentComponent } from './pages/document/edit-document/edit-document.component';
+import { DocumentComponent } from './pages/document/document.component';
+import { AdminGuard } from './guards/admin.guard';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -99,6 +105,17 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', component: HomeComponent },
+      { path: 'document', component: DocumentComponent },
+      { path: 'document/create', component: CreateDocumentComponent },
+      { path: 'document/edit/:id', component: EditDocumentComponent },
+    ],
+  },
+  {
+    path: '',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard, AdminGuard],
+    children: [
+      // { path: '', component: HomeComponent },
       { path: 'user', component: UserComponent },
       { path: 'user/create', component: CreateUserComponent },
       { path: 'user/edit/:id', component: EditUserComponent },
@@ -111,7 +128,10 @@ const routes: Routes = [
     canActivate: [NoAuthGuard],
   },
   // Redirect invalid routes
-  { path: '**', redirectTo: '' },
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({
@@ -125,6 +145,10 @@ const routes: Routes = [
     AuthLayoutComponent,
     CreateUserComponent,
     EditUserComponent,
+    CreateDocumentComponent,
+    EditDocumentComponent,
+    DocumentComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -145,6 +169,7 @@ const routes: Routes = [
     MatPaginatorModule,
     MatSortModule,
     MatMenuModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

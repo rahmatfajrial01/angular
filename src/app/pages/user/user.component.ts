@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../../shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -15,6 +16,7 @@ import { MatTableDataSource } from '@angular/material/table';
 export class UserComponent implements OnInit {
   users: User[] = [];
   error: string | null = null;
+  isLoading: boolean = true;
 
   constructor(
     private userService: UserService,
@@ -27,10 +29,14 @@ export class UserComponent implements OnInit {
   }
 
   loadUsers() {
-    this.userService.getUsers().subscribe({
-      next: (data) => (this.users = data),
-      error: (err) => (this.error = 'Gagal memuat data user'),
-    });
+    this.isLoading = true;
+    this.userService
+      .getUsers()
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (data) => (this.users = data),
+        error: (err) => (this.error = 'Gagal memuat data user'),
+      });
   }
 
   confirmDelete(id: number) {

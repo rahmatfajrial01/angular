@@ -42,9 +42,16 @@
           color="primary"
           class="full-width"
           type="submit"
-          [disabled]="loginForm.invalid"
+          [disabled]="loginForm.invalid || isLoading"
         >
-          Login
+          <mat-progress-spinner
+            *ngIf="isLoading"
+            diameter="20"
+            mode="indeterminate"
+            color="accent"
+            class="spinner-button"
+          ></mat-progress-spinner>
+          <span *ngIf="!isLoading">Login</span>
         </button>
       </form>
     </mat-card-content>

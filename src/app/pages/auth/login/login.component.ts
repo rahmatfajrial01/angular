@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { jwtDecode } from 'jwt-decode';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  isLoading = false;
   error: string | null = null;
 
   constructor(
@@ -48,26 +50,31 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
+
     const { email, password } = this.loginForm.value;
 
-    this.authService.login(email, password).subscribe({
-      next: () => {
-        this.error = null;
-        this.snackBar.open('Login berhasil!', 'Tutup', {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
-        });
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        this.error = '' + (err.error?.message || 'Server error');
-        this.snackBar.open(this.error, 'Tutup', {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
-        });
-      },
-    });
+    this.authService
+      .login(email, password)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: () => {
+          this.error = null;
+          this.snackBar.open('Login berhasil!', 'Tutup', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+          });
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          this.error = '' + (err.error?.message || 'Server error');
+          this.snackBar.open(this.error, 'Tutup', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'right',
+          });
+        },
+      });
   }
 }

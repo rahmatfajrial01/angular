@@ -1,5 +1,4 @@
 <!-- user.component.html -->
-<div *ngIf="error" class="error-msg">{{ error }}</div>
 
 <div
   style="
@@ -16,11 +15,18 @@
   </button>
 </div>
 
+<ng-container *ngIf="isLoading">
+  <div *ngFor="let item of [1, 2, 3, 4, 5]" class="skeleton-bar-full"></div>
+</ng-container>
+<ng-container>
+  <div *ngIf="error" class="error-msg">{{ error }}</div>
+</ng-container>
+
 <table
   mat-table
   [dataSource]="users"
   class="mat-elevation-z1"
-  *ngIf="users.length > 0"
+  *ngIf="users.length > 0 && !isLoading"
 >
   <!-- ID Column -->
   <ng-container matColumnDef="no">
@@ -78,4 +84,6 @@
   ></tr>
 </table>
 
-<div *ngIf="users.length === 0 && !error">Tidak ada data user.</div>
+<div *ngIf="users.length === 0 && !error && !isLoading">
+  Tidak ada data user.
+</div>

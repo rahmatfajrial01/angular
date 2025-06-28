@@ -8,6 +8,5 @@ import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.
 @NgModule({
   declarations: [ConfirmLogoutDialogComponent, ConfirmDialogComponent],
   imports: [CommonModule, MatDialogModule, MatButtonModule],
-  exports: [ConfirmLogoutDialogComponent],
 })
 export class SharedModule {}

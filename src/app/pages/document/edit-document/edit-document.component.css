@@ -1,0 +1,16 @@
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 500px;
+    margin-top: 16px;
+}
+
+.form-field {
+    width: 100%;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+}

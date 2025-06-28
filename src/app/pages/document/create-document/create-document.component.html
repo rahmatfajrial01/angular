@@ -1,0 +1,81 @@
+<mat-card>
+  <div style="padding: 16px">
+    <mat-card-title>Edit Dokumen</mat-card-title>
+  </div>
+
+  <mat-card-content>
+    <form [formGroup]="documentForm" (ngSubmit)="onSubmit()" class="user-form">
+      <!-- Judul -->
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Judul</mat-label>
+        <input matInput formControlName="title" />
+        <mat-error
+          *ngIf="
+            documentForm.get('title')?.invalid &&
+            documentForm.get('title')?.touched
+          "
+        >
+          Judul wajib diisi
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Deskripsi -->
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Deskripsi</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+
+      <!-- File -->
+      <!-- <div class="form-field">
+        <label for="file">File PDF (Opsional jika tidak ingin ganti)</label
+        ><br />
+        <input
+          type="file"
+          id="file"
+          (change)="onFileChange($event)"
+          accept="application/pdf"
+        />
+        <mat-error *ngIf="fileError">
+          {{ fileError }}
+        </mat-error>
+      </div> -->
+      <div class="form-field" style="margin-top: 16px">
+        <label>File PDF</label>
+        <div
+          style="display: flex; align-items: center; gap: 12px; margin-top: 8px"
+        >
+          <button
+            mat-stroked-button
+            color="accent"
+            type="button"
+            (click)="fileInput.click()"
+          >
+            Pilih File
+          </button>
+          <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+        </div>
+        <input
+          #fileInput
+          type="file"
+          hidden
+          (change)="onFileChange($event)"
+          accept="application/pdf"
+        />
+        <mat-error *ngIf="fileError">{{ fileError }}</mat-error>
+      </div>
+
+      <!-- Tombol -->
+      <div class="button-group" style="margin-top: 16px">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="documentForm.invalid"
+        >
+          Simpan
+        </button>
+        <button mat-button type="button" routerLink="/document">Batal</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
